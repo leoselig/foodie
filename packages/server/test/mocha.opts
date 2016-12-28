@@ -1,0 +1,4 @@
+--compilers js:babel-register,source-map-support/register
+--require babel-polyfill
+--timeout 10000
+./test/specs/*.js

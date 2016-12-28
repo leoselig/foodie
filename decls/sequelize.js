@@ -1,0 +1,5 @@
+declare type Sequelize = {
+  models: {
+    
+  }
+}

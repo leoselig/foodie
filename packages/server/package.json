@@ -1,0 +1,31 @@
+{
+  "name": "foodie-server",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Leo Selig",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.14.0",
+    "express-graphql": "^0.6.1",
+    "graphql": "^0.8.2",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "start-dev": "nodemon src/index.js --exec babel-node -i node_modules",
+    "start": "node lib/index.js",
+    "flow": "../../node_modules/.bin/flow",
+    "build": "babel src/ --out-dir lib/",
+    "test": "../../node_modules/.bin/mocha",
+    "test-watch": "../../node_modules/.bin/mocha --watch"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "crypto": "^0.0.3",
+    "deep-extend": "^0.4.1",
+    "graphql-server-express": "^0.4.3",
+    "graphql-tools": "^0.8.3",
+    "mysql": "^2.12.0",
+    "sequelize": "^3.27.0"
+  }
+}
