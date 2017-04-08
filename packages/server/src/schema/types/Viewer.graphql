@@ -1,4 +1,5 @@
 type Viewer {
+  currentUser: User,
   user(email: String): User,
   users(first: Int, offset: Int): [User]
   recipes(first: Int, offset: Int): [Recipe]

@@ -14,25 +14,29 @@ export default function defineUser(sequelize) {
     password: STRING(1024)
   });
 
-  User.authenticate = async function (email, password) {
+  User.Instance.prototype.authenticate = async function (password) {
     const { authToken: AuthToken } = sequelize.models;
 
+    const hashedPassword = hashPassword(password);
+
+    if (this.get('password') !== hashedPassword) {
+      throw new Error(`Incorrect password for user "${this.get('email')}"`);
+    }
+
+    return AuthToken.create({
+      user: this,
+      token: generateRandomToken()
+    });
+  };
+
+  User.findByEmail = async function (email) {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
       throw new Error(`Unknown user "${email}"`);
     }
 
-    const hashedPassword = hashPassword(password);
-
-    if (user.get('password') !== hashedPassword) {
-      throw new Error(`Incorrect password for user "${email}"`);
-    }
-
-    return AuthToken.create({
-      user,
-      token: generateRandomToken()
-    });
+    return user;
   };
 
   User.createWithPassword = function ({

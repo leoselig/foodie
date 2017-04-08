@@ -1,18 +1,45 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
+import cors from 'cors';
 
-import schema from './schema';
+import { database as databaseConfig } from './config';
+import { startDatabase } from './data';
+import createSchema from './schema';
 
-const GRAPHQL_PORT = 4000;
+startDatabase(databaseConfig).then((sequelize) => {
+  const schema = createSchema(sequelize);
 
-const app = express();
+  const GRAPHQL_PORT = 4000;
 
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-  context: {}
-}));
+  const app = express();
 
-app.listen(GRAPHQL_PORT, () => {
-  console.log(`Listening on http://localhost:${GRAPHQL_PORT}`);
-});
+  app.use('/graphql', cors({
+    origin: true,
+    methods: [ 'POST' ]
+  }), graphqlHTTP((request) => ({
+    schema,
+    graphiql: true,
+    context: {
+      authToken: console.log(request.headers) || request.headers.authorization
+    },
+    formatError: (error) => {
+      console.error(error);
+
+      return {
+        message: error.message,
+        locations: error.locations,
+        stack: error.stack
+      };
+    }
+  })));
+
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+
+    next(err);
+  });
+
+  app.listen(GRAPHQL_PORT, () => {
+    console.log(`Listening on http://localhost:${GRAPHQL_PORT}`);
+  });
+}).catch(console.error);

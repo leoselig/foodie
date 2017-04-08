@@ -1,3 +1,3 @@
 type RootMutation {
-  getAuthToken(email: String, password: String): AuthToken
+  createAuthToken(email: String, password: String): AuthToken
 }

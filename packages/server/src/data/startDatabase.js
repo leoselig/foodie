@@ -5,6 +5,7 @@ import Sequelize from 'sequelize';
 import type { AppConfigDatabase } from '../config';
 
 import defineModels from './models';
+import seed from './seeds';
 
 export default async function startDatabase({
   database,
@@ -22,6 +23,7 @@ export default async function startDatabase({
   defineModels(sequelize);
 
   await sequelize.sync({ force: true });
+  await seed(sequelize);
 
   return sequelize;
 }

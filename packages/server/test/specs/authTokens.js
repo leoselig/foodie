@@ -5,7 +5,7 @@ import testQuery from '../utils/testQuery';
 
 describe('authTokens', () => {
 
-  it('getAuthToken', async () => {
+  it('createAuthToken', async () => {
     const email = 'test@my.app';
     const password = 'SecURePaSswOrd';
 
@@ -19,7 +19,7 @@ describe('authTokens', () => {
       query(data) {
         return `
           mutation {
-            getAuthToken(
+            createAuthToken(
               email: "${data.user[0].email}",
               password: "${password}"
             ) {
@@ -31,7 +31,7 @@ describe('authTokens', () => {
     });
 
     expect(response.data)
-      .to.have.deep.property('getAuthToken.token')
+      .to.have.deep.property('createAuthToken.token')
       .to.have.length(256);
   });
 
